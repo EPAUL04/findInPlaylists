@@ -80,25 +80,26 @@ async function getToken() {
   localStorage.setItem('access_token', data.access_token);
 }
 
-// requests user's profile from spotify using access token stored in local storage
-async function requestProfile() {
-  // get access token
-  try {
-    await getToken();
-  } catch (error) {
-    console.log("ERROR: " + error);
-  }
-  let token = localStorage.getItem("access_token");
+// // requests user's profile from spotify using access token stored in local storage
+// async function requestProfile() {
+//   // get access token
+//   try {
+//     await getToken();
+//   } catch (error) {
+//     console.log("ERROR: " + error);
+//   }
+//   let token = localStorage.getItem("access_token");
 
-  // get profile using access token
-  const result = await fetch("https://api.spotify.com/v1/me", {
-    method: "GET", headers: { Authorization: "Bearer " + token }
-  });  
-  const profile = await result.json();
-  id = profile.account_id; //TODO: check this
-}
+//   // get profile using access token
+//   const result = await fetch("https://api.spotify.com/v1/me", {
+//     method: "GET", headers: { Authorization: "Bearer " + token }
+//   });  
+//   const profile = await result.json();
+//   id = profile.account_id; //TODO: check this
+// }
 
 async function findSong() {
+    getToken();
     let token = localStorage.getItem("access_token");
     let params = null;
 
@@ -117,7 +118,7 @@ async function findSong() {
     
     // if only title:
     if (artist == "") {
-        const params = new URLSearchParams({
+        params = new URLSearchParams({
             q: `track:${title}`,
             type: "track"
         });
