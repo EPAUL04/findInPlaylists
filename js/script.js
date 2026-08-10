@@ -1,5 +1,5 @@
 const clientId = '2a99961c31824a0bb28c08c0f6456955';    
-const redirectUri = 'https://epaul04.github.io/findInPlaylist/login-success.html';
+const redirectUri = 'https://epaul04.github.io/findInPlaylists/login-success.html';
 const urlParams = new URLSearchParams(window.location.search);
 let code = urlParams.get('code');
 let id = "";
