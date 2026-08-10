@@ -2,6 +2,7 @@ const clientId = '2a99961c31824a0bb28c08c0f6456955';
 const redirectUri = 'https://epaul04.github.io/findInPlaylist/login-success.html';
 const urlParams = new URLSearchParams(window.location.search);
 let code = urlParams.get('code');
+let id = "";
 
 
 // ================================================== API stuff =======================================================
@@ -36,7 +37,7 @@ async function login() {
     
     // step 2: user authentication
     
-    const scope = 'user-read-private user-read-email playlist-read-private user-library-read';
+    const scope = 'user-read-private user-read-email user-library-read playlist-read-private playlist-read-collaborative'; //TODO: remember to update this as needed
     const authUrl = new URL("https://accounts.spotify.com/authorize")
     
     // generated in the previous step
@@ -94,34 +95,107 @@ async function requestProfile() {
     method: "GET", headers: { Authorization: "Bearer " + token }
   });  
   const profile = await result.json();
-
-  // set text to reflect display name
-  document.getElementById("name").innerText = profile.display_name;
+  id = profile.account_id; //TODO: check this
 }
 
-function findSong() {
+async function findSong() {
+    let token = localStorage.getItem("access_token");
+    let result = null;
+
     // get input values
     let title= document.getElementById("title").value;
     let artist = document.getElementById("artist").value;
 
-    // if nothing entered, skip submission
-    if ((title == "") && (artist == "")) {
-        alert("nothing to submit!");
-        return false;
+    // if both title and artist:
+    if ((title != "") && (artist != "")) {
+        const findSong = await fetch(`https://api.spotify.com/v1/search?q=%2520track%3A${title}%2520artist%3A${artist}&type=track`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        result = await findSong.json();
     }
 
-    // otherwise, collect info for params and send request
-    if (title == "") {
-        alert("no title");
-    }
-    else {
-        alert(title);
-    }
+    // if only title:
     if (artist == "") {
-        alert("no artist");
+        const findSong = await fetch(`https://api.spotify.com/v1/search?q=%2520track%3A${title}&type=track`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        result = await findSong.json();
     }
-    else {
-        alert(artist);
-    }
+
+    alert("name " + result.tracks.items[0].name);
+    alert("id " + result.tracks.items[0].id);
+
+    checkAllPlaylists(result.tracks.items[0]);
+
     return false;
+}
+
+async function checkAllPlaylists(song) {
+
+    // get all playlists from user's library
+    const playlistRequest = await fetch(`https://api.spotify.com/v1/users/${id}/playlists`, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+    const result = await playlistRequest.json();
+
+    // check for song in each
+    result.items.forEach(playlist => {
+        alert("playlist " + playlist.name);
+    });
+}
+
+
+// NOTE: for reference only, remove later!!! ------------------------------------------------------------------------------------------------------------------
+
+async function getSongFeatures(songName) {
+  getToken();
+  let token = localStorage.getItem("access_token");
+  // turn songName into actual track object
+  const findSong = await fetch(`https://api.spotify.com/v1/search?q=${songName}&type=track`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  const result = await findSong.json();
+  console.log(result);
+  const id = result.tracks.items[0].id;
+  const songRequestFinal = await fetch(`https://api.spotify.com/v1/tracks/${id}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  const features = await songRequestFinal.json();
+
+  // get playlist the song is on
+  getToken();
+  token = localStorage.getItem("access_token");
+  const check = await fetch(`https://api.spotify.com/v1/me/tracks/contains?ids=${id}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  const inPlaylist = await check.json();
+  let playlist = inPlaylist[0];
+
+  // get artist
+  let artists = features.artists;
+
+  // get album
+  let album = features.album.name;
+
+
+  // now compare and update display ====================================================================
+  if (playlist == playlistsGlobal) {
+    document.getElementById("display-playlist").textContent = playlist;
+  }
+
+  for (let i = 0; i < artists.length; i++) {
+    for (let j = 0; j < artistsGlobal.length; j++) {
+      if (artists[i].name == artistsGlobal[j].name) {
+        if (!document.getElementById("display-artists").textContent.includes(artists[i].name)) {
+          document.getElementById("display-artists").textContent += artists[i].name;
+          document.getElementById("display-artists").textContent.replace("(artist)", "");
+        }
+      }
+    }
+  }
+  
+  if (album == albumGlobal.name) {
+    document.getElementById("display-album").textContent = album.name;
+    getAlbumCover(albumGlobal);
+  }
 }
