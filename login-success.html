@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Find in Playlist</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="css/styles.css">
+        <script src="js/script.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+
+    <body>        
+        <main>
+            <p>
+                Now, enter information about the song. Not all fields need to be filled out; this website will submit a request to find the song based on any information provided. Click submit when finished. 
+            </p>
+            <br>
+            <form>
+                <label>Song title:</label>
+                <input type="text" id="title">
+                <br>
+                <label>Artist(s):</label>
+                <input type="text" id="artist">
+                <br>
+                <input type="submit" onclick="findSong()">
+            </form>
+        </main>
+    </body>
+</html>
