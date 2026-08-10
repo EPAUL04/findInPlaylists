@@ -100,6 +100,7 @@ async function requestProfile() {
 
 async function findSong() {
     let token = localStorage.getItem("access_token");
+    let params = null;
 
     // get input values
     let title= document.getElementById("title").value;
@@ -108,7 +109,7 @@ async function findSong() {
     
     // if both title and artist:
     if ((title != "") && (artist != "")) {
-        const params = new URLSearchParams({
+        params = new URLSearchParams({
             q: `track:${title} artist:${artist}`,
             type: "track"
         });
