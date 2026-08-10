@@ -106,22 +106,28 @@ async function findSong() {
     let title= document.getElementById("title").value;
     let artist = document.getElementById("artist").value;
 
+    
     // if both title and artist:
     if ((title != "") && (artist != "")) {
-        const findSong = await fetch(`https://api.spotify.com/v1/search?q=%2520track%3A${title}%2520artist%3A${artist}&type=track`, {
-            headers: { Authorization: `Bearer ${token}` }
+        const params = new URLSearchParams({
+            q: `track:${title} artist:${artist}`,
+            type: "track"
         });
-        result = await findSong.json();
     }
-
+    
     // if only title:
     if (artist == "") {
-        const findSong = await fetch(`https://api.spotify.com/v1/search?q=%2520track%3A${title}&type=track`, {
-            headers: { Authorization: `Bearer ${token}` }
+        const params = new URLSearchParams({
+            q: `track:${title}`,
+            type: "track"
         });
-        result = await findSong.json();
     }
-
+    
+    const findSong = await fetch(`https://api.spotify.com/v1/search?${params}`, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+    const result = await findSong.json();
+    
     alert("name " + result.tracks.items[0].name);
     alert("id " + result.tracks.items[0].id);
 
@@ -131,9 +137,10 @@ async function findSong() {
 }
 
 async function checkAllPlaylists(song) {
+    let token = localStorage.getItem("access_token");
 
     // get all playlists from user's library
-    const playlistRequest = await fetch(`https://api.spotify.com/v1/users/${id}/playlists`, {
+    const playlistRequest = await fetch(`https://api.spotify.com/v1/me/playlists`, {
         headers: { Authorization: `Bearer ${token}` }
     });
     const result = await playlistRequest.json();
