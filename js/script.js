@@ -100,7 +100,6 @@ async function requestProfile() {
 
 async function findSong() {
     let token = localStorage.getItem("access_token");
-    let result = null;
 
     // get input values
     let title= document.getElementById("title").value;
