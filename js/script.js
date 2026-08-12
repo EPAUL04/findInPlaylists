@@ -138,6 +138,7 @@ async function findSong() {
 }
 
 async function checkAllPlaylists(song) {
+    getToken();
     let token = localStorage.getItem("access_token");
 
     // get all playlists from user's library
