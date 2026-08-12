@@ -111,7 +111,7 @@ async function findSong() {
     // if both title and artist:
     if ((title != "") && (artist != "")) {
         params = new URLSearchParams({
-            q: `track:${title} artist:${artist}`,
+            q: `track%2520${title}%2520artist%2520${artist}`,
             type: "track"
         });
     }
@@ -119,7 +119,7 @@ async function findSong() {
     // if only title:
     if (artist == "") {
         params = new URLSearchParams({
-            q: `track:${title}`,
+            q: `track%2520${title}`,
             type: "track"
         });
     }
