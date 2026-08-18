@@ -142,30 +142,81 @@ async function findSong() {
 }
 
 async function checkAllPlaylists(song) {
-    // getToken();
-    let token = localStorage.getItem("access_token");
+    const token = localStorage.getItem("access_token");
 
-    // get all playlists from user's library
-    // const playlistRequest = await fetch(`https://api.spotify.com/v1/me/playlists`, {
-    //     headers: { Authorization: `Bearer ${token}` }
-    // });
-    // const result = await playlistRequest.json();
+    if (!token) {
+        console.error("No Spotify access token found.");
+        return;
+    }
 
-    // // check for song in each
-    // result.items.forEach(async playlist => {
-    //     // alert("playlist " + playlist.name);
-    //     const playlistRequest2 = await fetch(`https://api.spotify.com/v1/playlists/${playlist.id}`, {
-    //         headers: { Authorization: `Bearer ${token}` }
-    //     });
-    //     console.log(playlistRequest2); //TODO: remove
-    //     const result2 = await playlistRequest2.json();
-    //     result2.tracks.items.forEach(song => {
-    //         if (song.name == songGlobal.name) {
-    //             playlistsGlobal += playlist + ", ";
-    //         }
-    //     })
-    // });
-    document.getElementById("display-playlist").textContent = playlistsGlobal;
+    try {
+        // Get all playlists
+        const playlistResponse = await fetch(
+            "https://api.spotify.com/v1/me/playlists?limit=50",
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        if (!playlistResponse.ok) {
+            throw new Error(
+                `Failed to get playlists: ${playlistResponse.status}`
+            );
+        }
+
+        const playlistData = await playlistResponse.json();
+
+        const playlistsContainingSong = [];
+
+        // Check each playlist
+        for (const playlist of playlistData.items) {
+            const response = await fetch(
+                `https://api.spotify.com/v1/playlists/${playlist.id}/tracks?limit=100`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+
+            if (!response.ok) {
+                console.error(
+                    `Failed to get tracks for ${playlist.name}: ${response.status}`
+                );
+                continue;
+            }
+
+            const data = await response.json();
+
+            // Check whether this playlist contains the song
+            const containsSong = data.items.some(item => {
+                const track = item.track;
+
+                return track && track.name === song.name;
+            });
+
+            if (containsSong) {
+                playlistsContainingSong.push(playlist.name);
+            }
+        }
+
+        // Display results
+        const display = document.getElementById("display-playlist");
+
+        if (playlistsContainingSong.length > 0) {
+            display.textContent = playlistsContainingSong.join(", ");
+        } else {
+            display.textContent = "Song isn't in any of your playlists.";
+        }
+
+    } catch (error) {
+        console.error("Error checking playlists:", error);
+
+        document.getElementById("display-playlist").textContent =
+            "There was an error checking your playlists.";
+    }
 }
 
 
