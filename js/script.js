@@ -128,6 +128,7 @@ async function findSong() {
     }
     document.getElementById("display-artists").textContent += features.artists[i].name;
     
+    alert("resetting");
     document.getElementById("display-album").textContent = features.album.name;
     document.getElementById("display-image").src = features.album.images[0].url;
 
