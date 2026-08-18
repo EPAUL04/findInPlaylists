@@ -173,7 +173,7 @@ async function checkAllPlaylists(song) {
         // Check each playlist
         for (const playlist of playlistData.items) {
             const response = await fetch(
-                `https://api.spotify.com/v1/playlists/${playlist.id}/tracks?limit=100`,
+                `https://api.spotify.com/v1/playlists/${playlist.id}/items?limit=100`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
