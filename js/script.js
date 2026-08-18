@@ -3,7 +3,7 @@ const redirectUri = 'https://epaul04.github.io/findInPlaylists/login-success.htm
 const urlParams = new URLSearchParams(window.location.search);
 let code = urlParams.get('code');
 let id = "";
-let playlistsGlobal = {};
+let playlistsGlobal = "";
 let songGlobal = null;
 
 
@@ -153,17 +153,15 @@ async function checkAllPlaylists(song) {
 
     // check for song in each
     result.items.forEach(async playlist => {
-        alert("playlist " + playlist.name);
+        // alert("playlist " + playlist.name);
         const playlistRequest2 = await fetch(`https://api.spotify.com/v1/playlists/${playlist.id}`, {
             headers: { Authorization: `Bearer ${token}` }
         });
         console.log(playlistRequest2); //TODO: remove
         const result2 = await playlistRequest2.json();
-        let counter = 0;
         result2.tracks.items.forEach(song => {
             if (song.name == songGlobal.name) {
-                playlistsGlobal[counter] = playlist;
-                counter++;
+                playlistsGlobal += playlist + ", ";
             }
         })
     });
