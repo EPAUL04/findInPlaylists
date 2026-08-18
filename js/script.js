@@ -80,24 +80,6 @@ async function getToken() {
   localStorage.setItem('access_token', data.access_token);
 }
 
-// // requests user's profile from spotify using access token stored in local storage
-// async function requestProfile() {
-//   // get access token
-//   try {
-//     await getToken();
-//   } catch (error) {
-//     console.log("ERROR: " + error);
-//   }
-//   let token = localStorage.getItem("access_token");
-
-//   // get profile using access token
-//   const result = await fetch("https://api.spotify.com/v1/me", {
-//     method: "GET", headers: { Authorization: "Bearer " + token }
-//   });  
-//   const profile = await result.json();
-//   id = profile.account_id; //TODO: check this
-// }
-
 async function findSong() {
     getToken();
     let token = localStorage.getItem("access_token");
@@ -132,9 +114,32 @@ async function findSong() {
     alert("name " + result.tracks.items[0].name);
     alert("id " + result.tracks.items[0].id);
 
-    checkAllPlaylists(result.tracks.items[0]);
+    // now compare and update display ====================================================================
+    document.getElementById("display-title").textContent = result.tracks.items[0].name;
+
+    for (let i = 0; i < result.tracks.items[0].artists.length - 1; i++) {
+        document.getElementById("display-artists").textContent += artists[i].name + ", ";
+    }
+    document.getElementById("display-artist").textContent += result.tracks.items[0].artists[artists.length];
+    
+    document.getElementById("display-album").textContent = album.name;
+    getAlbumCover(result.tracks.items[0].album);
+
+    // checkAllPlaylists(result.tracks.items[0]);
 
     return false;
+}
+
+async function getAlbumCover(id) {
+  // send request for album art
+//   getToken();
+  const token = localStorage.getItem("access_token");
+  const request = await fetch(`https://api.spotify.com/v1/albums/${id}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  const cover = await request.json();
+  // set the element to the new src url
+  document.getElementById("display-image").src = cover.images[0].url;
 }
 
 async function checkAllPlaylists(song) {
