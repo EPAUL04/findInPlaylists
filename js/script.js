@@ -99,7 +99,7 @@ async function getToken() {
 // }
 
 async function findSong() {
-    getToken();
+    // getToken();
     let token = localStorage.getItem("access_token");
     let params = null;
 
@@ -138,7 +138,7 @@ async function findSong() {
 }
 
 async function checkAllPlaylists(song) {
-    getToken();
+    // getToken();
     let token = localStorage.getItem("access_token");
 
     // get all playlists from user's library
@@ -157,7 +157,7 @@ async function checkAllPlaylists(song) {
 // NOTE: for reference only, remove later!!! ------------------------------------------------------------------------------------------------------------------
 
 async function getSongFeatures(songName) {
-  getToken();
+//   getToken();
   let token = localStorage.getItem("access_token");
   // turn songName into actual track object
   const findSong = await fetch(`https://api.spotify.com/v1/search?q=${songName}&type=track`, {
@@ -172,7 +172,7 @@ async function getSongFeatures(songName) {
   const features = await songRequestFinal.json();
 
   // get playlist the song is on
-  getToken();
+//   getToken();
   token = localStorage.getItem("access_token");
   const check = await fetch(`https://api.spotify.com/v1/me/tracks/contains?ids=${id}`, {
     headers: { Authorization: `Bearer ${token}` }
