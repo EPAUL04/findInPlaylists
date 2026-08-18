@@ -120,7 +120,7 @@ async function findSong() {
     for (let i = 0; i < result.tracks.items[0].artists.length - 1; i++) {
         document.getElementById("display-artists").textContent += artists[i].name + ", ";
     }
-    document.getElementById("display-artists").textContent += result.tracks.items[0].artists[artists.length];
+    document.getElementById("display-artists").textContent += result.tracks.items[0].artists[result.tracks.items[0].artists.length];
     
     document.getElementById("display-album").textContent = album.name;
     getAlbumCover(result.tracks.items[0].album);
