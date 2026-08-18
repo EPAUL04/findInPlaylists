@@ -125,7 +125,7 @@ async function findSong() {
     document.getElementById("display-album").textContent = album.name;
     getAlbumCover(result.tracks.items[0].album);
 
-    // checkAllPlaylists(result.tracks.items[0]);
+    checkAllPlaylists(result.tracks.items[0]);
 
     return false;
 }
@@ -155,6 +155,7 @@ async function checkAllPlaylists(song) {
     // check for song in each
     result.items.forEach(playlist => {
         alert("playlist " + playlist.name);
+        alert("playlist " + playlist.items.href);
     });
 }
 
