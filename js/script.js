@@ -159,12 +159,15 @@ async function checkAllPlaylists(song) {
         });
         console.log(playlistRequest2); //TODO: remove
         const result2 = await playlistRequest2.json();
+        let counter = 0;
         result2.tracks.items.forEach(song => {
             if (song.name == songGlobal.name) {
-                playlistsGlobal += playlist;
+                playlistsGlobal[counter] = playlist;
+                counter++;
             }
         })
     });
+    document.getElementById("display-playlist").textContent = playlistsGlobal.toString();
 }
 
 
@@ -202,10 +205,6 @@ async function getSongFeatures(songName) {
 
 
   // now compare and update display ====================================================================
-  if (playlist == playlistsGlobal) {
-    document.getElementById("display-playlist").textContent = playlist;
-  }
-
   for (let i = 0; i < artists.length; i++) {
     for (let j = 0; j < artistsGlobal.length; j++) {
       if (artists[i].name == artistsGlobal[j].name) {
