@@ -122,10 +122,11 @@ async function findSong() {
 
     document.getElementById("display-title").textContent = features.name;
     document.getElementById("display-artists").textContent = "";
-    for (let i = 0; i < features.artists.length - 1; i++) {
+    let i = 0;
+    for (; i < features.artists.length - 1; i++) {
         document.getElementById("display-artists").textContent += features.artists[i].name + ", ";
     }
-    document.getElementById("display-artists").textContent += features.artists[features.artists.length].name;
+    document.getElementById("display-artists").textContent += features.artists[i + 1].name;
     
     document.getElementById("display-album").textContent = features.album.name;
     document.getElementById("display-image").src = features.album.images[0].url;
