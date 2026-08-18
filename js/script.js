@@ -115,31 +115,24 @@ async function findSong() {
     alert("id " + result.tracks.items[0].id);
 
     // now compare and update display ====================================================================
-    document.getElementById("display-title").textContent = result.tracks.items[0].name;
+      const songRequestFinal = await fetch(`https://api.spotify.com/v1/tracks/${result.tracks.items[0].id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+    const features = await songRequestFinal.json();
 
-    for (let i = 0; i < result.tracks.items[0].artists.length - 1; i++) {
-        document.getElementById("display-artists").textContent += artists[i].name + ", ";
+    document.getElementById("display-title").textContent = features.name;
+    document.getElementById("display-artists").textContent = "";
+    for (let i = 0; i < features.artists.length - 1; i++) {
+        document.getElementById("display-artists").textContent += features.artists[i].name + ", ";
     }
-    document.getElementById("display-artists").textContent += result.tracks.items[0].artists[result.tracks.items[0].artists.length];
+    document.getElementById("display-artists").textContent += features.artists[features.artists.length].name;
     
-    document.getElementById("display-album").textContent = album.name;
-    getAlbumCover(result.tracks.items[0].album);
+    document.getElementById("display-album").textContent = features.album.name;
+    document.getElementById("display-image").src = features.album.images[0].url;
 
     checkAllPlaylists(result.tracks.items[0]);
 
     return false;
-}
-
-async function getAlbumCover(id) {
-  // send request for album art
-//   getToken();
-  const token = localStorage.getItem("access_token");
-  const request = await fetch(`https://api.spotify.com/v1/albums/${id}`, {
-    headers: { Authorization: `Bearer ${token}` }
-  });
-  const cover = await request.json();
-  // set the element to the new src url
-  document.getElementById("display-image").src = cover.images[0].url;
 }
 
 async function checkAllPlaylists(song) {
