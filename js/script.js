@@ -3,7 +3,7 @@ const redirectUri = 'https://epaul04.github.io/findInPlaylists/login-success.htm
 const urlParams = new URLSearchParams(window.location.search);
 let code = urlParams.get('code');
 let id = "";
-let playlistsGlobal = "";
+let playlistsGlobal = "blank";
 let songGlobal = null;
 
 
@@ -146,26 +146,26 @@ async function checkAllPlaylists(song) {
     let token = localStorage.getItem("access_token");
 
     // get all playlists from user's library
-    const playlistRequest = await fetch(`https://api.spotify.com/v1/me/playlists`, {
-        headers: { Authorization: `Bearer ${token}` }
-    });
-    const result = await playlistRequest.json();
+    // const playlistRequest = await fetch(`https://api.spotify.com/v1/me/playlists`, {
+    //     headers: { Authorization: `Bearer ${token}` }
+    // });
+    // const result = await playlistRequest.json();
 
-    // check for song in each
-    result.items.forEach(async playlist => {
-        // alert("playlist " + playlist.name);
-        const playlistRequest2 = await fetch(`https://api.spotify.com/v1/playlists/${playlist.id}`, {
-            headers: { Authorization: `Bearer ${token}` }
-        });
-        console.log(playlistRequest2); //TODO: remove
-        const result2 = await playlistRequest2.json();
-        result2.tracks.items.forEach(song => {
-            if (song.name == songGlobal.name) {
-                playlistsGlobal += playlist + ", ";
-            }
-        })
-    });
-    document.getElementById("display-playlist").textContent = playlistsGlobal.toString();
+    // // check for song in each
+    // result.items.forEach(async playlist => {
+    //     // alert("playlist " + playlist.name);
+    //     const playlistRequest2 = await fetch(`https://api.spotify.com/v1/playlists/${playlist.id}`, {
+    //         headers: { Authorization: `Bearer ${token}` }
+    //     });
+    //     console.log(playlistRequest2); //TODO: remove
+    //     const result2 = await playlistRequest2.json();
+    //     result2.tracks.items.forEach(song => {
+    //         if (song.name == songGlobal.name) {
+    //             playlistsGlobal += playlist + ", ";
+    //         }
+    //     })
+    // });
+    document.getElementById("display-playlist").textContent = playlistsGlobal;
 }
 
 
