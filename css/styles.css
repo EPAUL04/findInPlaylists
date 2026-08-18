@@ -43,6 +43,8 @@ main form {
 }
 main form > input {
     width: 30em;
+    padding: 0.5em 0em;
+    margin: 0.5em 0em;
 }
 form label.submit {
     background-color: white;
