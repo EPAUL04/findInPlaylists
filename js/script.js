@@ -152,14 +152,14 @@ async function checkAllPlaylists(song) {
     const result = await playlistRequest.json();
 
     // check for song in each
-    result.items.forEach(playlist => {
+    result.items.forEach(async playlist => {
         alert("playlist " + playlist.name);
-        const playlistRequest = await fetch(`https://api.spotify.com/v1/playlists/${playlist.id}`, {
+        const playlistRequest2 = await fetch(`https://api.spotify.com/v1/playlists/${playlist.id}`, {
             headers: { Authorization: `Bearer ${token}` }
         });
-        console.log(playlistRequest); //TODO: remove
-        const result = await songRequest.json();
-        result.items.forEach(song => {
+        console.log(playlistRequest2); //TODO: remove
+        const result2 = await playlistRequest2.json();
+        result2.tracks.items.forEach(song => {
             if (song.name == songGlobal.name) {
                 playlistsGlobal += playlist;
             }
