@@ -158,7 +158,7 @@ async function checkAllPlaylists(song) {
             headers: { Authorization: `Bearer ${token}` }
         });
         const result2 = await playlistRequest2.json();
-        result2.items.forEach(song => {
+        result2.items.forEach(async song => {
             alert("comparing " + song.name + " and " + songGlobal.name); 
             if (song.name == songGlobal.name) {
                 alert(playlist + " has song");
