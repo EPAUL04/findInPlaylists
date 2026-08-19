@@ -56,7 +56,6 @@ async function login() {
     
     authUrl.search = new URLSearchParams(params).toString();
     window.location.href = authUrl.toString();
-    requestProfile();
 }
 
 // requests user's profile from spotify using access token stored in local storage
@@ -105,9 +104,10 @@ async function getToken() {
 }
 
 async function findSong() {
-    // getToken();
+    getToken();
     let token = localStorage.getItem("access_token");
     let params = null;
+    requestProfile();
 
     // get input values
     let title= document.getElementById("title").value;
