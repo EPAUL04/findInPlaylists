@@ -104,7 +104,7 @@ async function getToken() {
 }
 
 async function findSong() {
-    getToken();
+    // getToken();
     let token = localStorage.getItem("access_token");
     let params = null;
 
