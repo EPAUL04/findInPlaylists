@@ -1,7 +1,6 @@
 const clientId = '2a99961c31824a0bb28c08c0f6456955';    
 const redirectUri = 'https://epaul04.github.io/findInPlaylists/login-success.html';
 const urlParams = new URLSearchParams(window.location.search);
-let code = urlParams.get('code');
 let id = "";
 let playlistsGlobal = "blank";
 let songGlobal = null;
@@ -83,6 +82,7 @@ async function requestProfile() {
 // get access token and store in local storage
 async function getToken() {
   const codeVerifier = localStorage.getItem('code_verifier');
+  let code = urlParams.get('code');
   const url = "https://accounts.spotify.com/api/token";
   const payload = {
     method: 'POST',
