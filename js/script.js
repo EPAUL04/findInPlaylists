@@ -83,6 +83,7 @@ async function requestProfile() {
 async function getToken() {
   const codeVerifier = localStorage.getItem('code_verifier');
   let code = urlParams.get('code');
+  alert(code);
   const url = "https://accounts.spotify.com/api/token";
   const payload = {
     method: 'POST',
