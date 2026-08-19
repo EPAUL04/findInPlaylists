@@ -5,6 +5,7 @@ let code = urlParams.get('code');
 let id = "";
 let playlistsGlobal = "blank";
 let songGlobal = null;
+let myID = null;
 
 
 // ================================================== API stuff =======================================================
@@ -56,7 +57,27 @@ async function login() {
     
     authUrl.search = new URLSearchParams(params).toString();
     window.location.href = authUrl.toString();
-    
+    requestProfile();
+}
+
+// requests user's profile from spotify using access token stored in local storage
+async function requestProfile() {
+  // get access token
+  try {
+    await getToken();
+  } catch (error) {
+    console.log("ERROR: " + error);
+  }
+  let token = localStorage.getItem("access_token");
+
+  // get profile using access token
+  const result = await fetch("https://api.spotify.com/v1/me", {
+    method: "GET", headers: { Authorization: "Bearer " + token }
+  });  
+  const profile = await result.json();
+
+  // set text to reflect display name
+  myID = profile.id;
 }
 
 // get access token and store in local storage
@@ -153,18 +174,20 @@ async function checkAllPlaylists(song) {
 
     // check for song in each
     result.items.forEach(async playlist => {
+      if (playlist.owner.id == myID) {
         alert("playlist " + playlist.name);
         const playlistRequest2 = await fetch(`https://api.spotify.com/v1/playlists/${playlist.id}`, {
             headers: { Authorization: `Bearer ${token}` }
         });
         const result2 = await playlistRequest2.json();
-        result2.items.forEach(async song => {
+        result2.items.forEach(song => {
             alert("comparing " + song.name + " and " + songGlobal.name); 
             if (song.name == songGlobal.name) {
                 alert(playlist + " has song");
                 playlistsGlobal += playlist + ", ";
             }
-        })
+        });
+      }
     });
     document.getElementById("display-playlist").textContent = playlistsGlobal;
 }
