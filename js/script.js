@@ -61,11 +61,6 @@ async function login() {
 // requests user's profile from spotify using access token stored in local storage
 async function requestProfile() {
   // get access token
-  try {
-    await getToken();
-  } catch (error) {
-    console.log("ERROR: " + error);
-  }
   let token = localStorage.getItem("access_token");
 
   // get profile using access token
