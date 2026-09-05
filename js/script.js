@@ -180,7 +180,7 @@ async function checkAllPlaylists(song) {
           // alert("comparing " + song.item.name + " and " + songGlobal.name); 
           if (song.item.name == songGlobal.name) {
             alert(playlist.name + " has song");
-            playlistsGlobal += ", " + playlist.name;
+            // playlistsGlobal += ", " + playlist.name;
             playlistsGlobal.concat(", ");
             playlistsGlobal.concat(playlist.name);
           }
