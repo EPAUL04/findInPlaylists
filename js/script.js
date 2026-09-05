@@ -179,8 +179,8 @@ async function checkAllPlaylists(song) {
         result2.items.items.forEach(song => {
             // alert("comparing " + song.item.name + " and " + songGlobal.name); 
             if (song.item.name == songGlobal.name) {
-                alert(playlist + " has song");
-                playlistsGlobal += playlist + ", ";
+                alert(playlist.name + " has song");
+                playlistsGlobal += playlist.name + ", ";
             }
         });
       }
