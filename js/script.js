@@ -176,8 +176,8 @@ async function checkAllPlaylists(song) {
         });
         const result2 = await playlistRequest2.json();
         result2.items.items.forEach(song => {
-            alert("comparing " + song.track.TrackObject.name + " and " + songGlobal.name); 
-            if (song.track.name == songGlobal.name) {
+            alert("comparing " + song.item.name + " and " + songGlobal.name); 
+            if (song.item.name == songGlobal.name) {
                 alert(playlist + " has song");
                 playlistsGlobal += playlist + ", ";
             }
