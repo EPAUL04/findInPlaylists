@@ -181,6 +181,8 @@ async function checkAllPlaylists(song) {
           if (song.item.name == songGlobal.name) {
             alert(playlist.name + " has song");
             playlistsGlobal += ", " + playlist.name;
+            playlistsGlobal.concat(", ");
+            playlistsGlobal.concat(playlist.name);
           }
         });
       }
