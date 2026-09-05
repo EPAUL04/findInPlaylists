@@ -168,6 +168,7 @@ async function checkAllPlaylists(song) {
     const result = await playlistRequest.json();
 
     // check for song in each
+    alert("checking all playlists...");
     result.items.forEach(async playlist => {
       if (playlist.owner.id == myID) {
         // alert("playlist " + playlist.name);
@@ -176,7 +177,7 @@ async function checkAllPlaylists(song) {
         });
         const result2 = await playlistRequest2.json();
         result2.items.items.forEach(song => {
-            alert("comparing " + song.item.name + " and " + songGlobal.name); 
+            // alert("comparing " + song.item.name + " and " + songGlobal.name); 
             if (song.item.name == songGlobal.name) {
                 alert(playlist + " has song");
                 playlistsGlobal += playlist + ", ";
@@ -184,6 +185,7 @@ async function checkAllPlaylists(song) {
         });
       }
     });
+    alert("done!");
     document.getElementById("display-playlist").textContent = playlistsGlobal;
 }
 
