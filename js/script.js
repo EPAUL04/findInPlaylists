@@ -2,7 +2,7 @@ const clientId = '2a99961c31824a0bb28c08c0f6456955';
 const redirectUri = 'https://epaul04.github.io/findInPlaylists/login-success.html';
 const urlParams = new URLSearchParams(window.location.search);
 let id = "";
-let playlistsGlobal = "blank";
+let playlistsGlobal = "likes";
 let songGlobal = null;
 let myID = null;
 
@@ -177,11 +177,11 @@ async function checkAllPlaylists(song) {
         });
         const result2 = await playlistRequest2.json();
         result2.items.items.forEach(song => {
-            // alert("comparing " + song.item.name + " and " + songGlobal.name); 
-            if (song.item.name == songGlobal.name) {
-                alert(playlist.name + " has song");
-                playlistsGlobal += playlist.name + ", ";
-            }
+          // alert("comparing " + song.item.name + " and " + songGlobal.name); 
+          if (song.item.name == songGlobal.name) {
+            alert(playlist.name + " has song");
+            playlistsGlobal += ", " + playlist.name;
+          }
         });
       }
     });
